@@ -10,13 +10,13 @@ services:
     environment:
             - node_env=$NODE_ENV
     depends_on:
-        - mysql
+        - mysql2
     ports:
         - "5000:5000"
 
-  mysql:
+  mysql2:
     image: mysql:5.6
-    container_name: mysql
+    container_name: mysql2
     ports:
         - "3306:3306"
     env_file: .env
@@ -30,9 +30,9 @@ services:
 
   phpmyadmin:
       image: phpmyadmin/phpmyadmin
-      container_name: phpmyadmin
+      container_name: phpmyadmin2
       links:
-          - mysql:db
+          - mysql2:db
       ports:
           - "81:80"
       restart: always
