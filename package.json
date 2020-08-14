@@ -1,0 +1,43 @@
+{
+  "name": "linkapi_challenge",
+  "version": "1.0.0",
+  "description": "Api integration between pipedrive and bling",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --reporter=html mocha --timeout 20000 --exit src/tests/*.js",
+    "test:watch": "nyc mocha src/tests/*.js -w",
+    "test:prod": "cross-env NODE_ENV=prod npm t",
+    "prod": "cross-env NODE_ENV=prod node src/Api.js",
+    "dev": "cross-env NODE_ENV=dev pm2-runtime src/Api.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andersonRocha091/multidatasource-scaffold.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andersonRocha091/multidatasource-scaffold/issues"
+  },
+  "homepage": "https://github.com/andersonRocha091/multidatasource-scaffold#readme",
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/inert": "^6.0.1",
+    "@hapi/joi": "^17.1.1",
+    "@hapi/vision": "^6.0.0",
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
+    "boom": "^7.3.0",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.16",
+    "pm2": "^4.4.0",
+    "uuid": "^8.3.0",
+    "xmlbuilder": "^15.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^7.2.0",
+    "nyc": "^15.1.0"
+  }
+}

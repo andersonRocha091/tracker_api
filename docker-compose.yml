@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: api
+    env_file: .env
+    environment:
+            - node_env=$NODE_ENV
+    depends_on:
+        - mysql
+    ports:
+        - "5000:5000"
+
+  mysql:
+    image: mysql:5.6
+    container_name: mysql
+    ports:
+        - "3306:3306"
+    env_file: .env
+    environment:
+       - MYSQL_ROOT_PASSWORD=$ROOT_PASSWORD 
+    command: mysqld --max_allowed_packet=32505856 --sql_mode="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+    volumes:
+        - ./docker/dados-mysql:/var/lib/mysql
+    networks:
+        - default
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      links:
+          - mysql:db
+      ports:
+          - "81:80"
+      restart: always
+      env_file: .env
+      environment:
+          - PMA_HOST=$PMA_HOST
+          - PMA_PORT=$PMA_PORT
+          - UPLOAD_LIMIT=$UPLOAD_LIMIT
+
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   ports:
+  #     - "27017:27017"
+  #   env_file: .env
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+  #     - MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+  #     - MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE
+  #     - DATABASE_USERNAME=$DATABASE_USER
+  #     - DATABASE_PASSWORD=$DATABASE_PASSWORD
+  #     - MONGO_PORT=$MONGO_PORT
+  #   volumes:
+  #     - ./docker_scripts/:/docker-entrypoint-initdb.d
+
+  # mongoClient:
+  #   image: mongoclient/mongoclient
+  #   ports:
+  #     - "3000:3000"
+  #   restart: always
+
