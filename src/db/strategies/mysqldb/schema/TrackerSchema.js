@@ -60,9 +60,10 @@ class Tracker {
     return this.executeQuery(sql);
   }
 
-  async delete(id) {
-    const query = id ? { id } : {};
-    return this._schema.destroy({ where: query });
+  async delete(query) {
+    const whereCondition = await this.getFilterConditions(query);
+    let sql = `DELETE FROM tracking_202007_new ` + whereCondition;
+    return this.executeQuery(sql);
   }
 
   executeQuery(sql) {
@@ -81,7 +82,7 @@ class Tracker {
     return new Promise((resolve, reject) => {
       let params = "";
       let keysSize = Object.keys(item).length;
-      if (keysSize == 0) return "";
+      if (keysSize == 0) resolve("");
       Object.keys(item).forEach((element, key) => {
         params +=
           element === "insert_time" || element === "engine"
@@ -97,7 +98,7 @@ class Tracker {
     return new Promise((resolve, reject) => {
       let conditionWhereClause = "WHERE ";
       let keysSize = Object.keys(item).length;
-      if (keysSize == 0) return "";
+      if (keysSize == 0) resolve("");
       Object.keys(item).forEach((element, key) => {
         conditionWhereClause += `(${element} = ${item[element]}) `;
         conditionWhereClause +=

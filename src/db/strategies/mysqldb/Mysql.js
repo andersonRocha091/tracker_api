@@ -45,9 +45,9 @@ class Mysql extends ICrud {
     return this._schema.update(id, item);
   }
 
-  async delete(id) {
-    const query = id ? { id } : {};
-    return this._schema.destroy({ where: query });
+  async delete(uid) {
+    const query = uid ? { uid: uid } : {};
+    return this._schema.delete(query);
   }
 }
 module.exports = Mysql;

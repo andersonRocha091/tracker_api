@@ -62,20 +62,25 @@ describe("Testing connection anda database interation", function () {
     assert.equal(result.affectedRows, 1);
   });
   it("Listing an specific item by any attributes", async function () {
-    const result = await context.read({ uid: 2, speed: 130 });
+    const result = await context.read({ speed: 130 });
     assert.ok(result.length > 0);
   });
 
   it("Updating an track record", async function () {
-    const [itemUpdate] = await context.read({ uid: 1 });
+    const [itemUpdate] = await context.read({ uid: 40 });
 
     const newItem = {
       ...MOCK_UPDATE_ITEM,
       tracker_uid: 12349,
       speed: 170,
     };
-
     const result = await context.update(itemUpdate.uid, newItem);
     assert.equal(result.affectedRows, 1);
+  });
+
+  it("Removing itens", async function () {
+    const [item] = await context.read({});
+    const result = await context.delete(item.uid);
+    assert.ok(result.affectedRows);
   });
 });
