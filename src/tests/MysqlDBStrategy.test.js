@@ -72,8 +72,14 @@ describe("Testing connection anda database interation", function () {
     const result = await context.create(MOCK_INSERT_ITEM);
     assert.equal(result.affectedRows, 1);
   });
+
   it("Listing an specific item by any attributes", async function () {
     const result = await context.read({ speed: 130 });
+    assert.ok(result.length > 0);
+  });
+
+  it("Listing all itens", async function () {
+    const result = await context.read({});
     assert.ok(result.length > 0);
   });
 

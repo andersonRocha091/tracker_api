@@ -6,14 +6,14 @@ const failAction = (request, headers, erro) => {
   throw erro;
 };
 
-class RevenueRoutes extends BaseRoute {
+class TrackerRoutes extends BaseRoute {
   constructor(db) {
     super();
     this.db = db;
   }
   list() {
     return {
-      path: "/revenues",
+      path: "/tracker",
       method: "GET",
       options: {
         validate: {
@@ -26,9 +26,8 @@ class RevenueRoutes extends BaseRoute {
       },
       handler: async (request, headers) => {
         try {
-          const { skip, limit, name } = request.query;
-          const query = { nome: { $regex: `.*${name}*.` } };
-          const result = await this.db.read(name ? query : {}, skip, limit);
+          const { skip, limit } = request.query;
+          const result = await this.db.read({}, skip, limit);
           return result;
         } catch (error) {
           return boom.internal();
@@ -183,4 +182,4 @@ class RevenueRoutes extends BaseRoute {
   }
 }
 
-module.exports = RevenueRoutes;
+module.exports = TrackerRoutes;

@@ -17,10 +17,9 @@ const Vision = require("@hapi/vision");
 const Inert = require("@hapi/inert");
 
 const Context = require("./db/strategies/base/ContextStrategy");
-const MongoDB = require("./db/strategies/mongodb/MongoDB");
-const Schema = require("./db/strategies/mongodb/schemes/RevenueSchema");
-const RevenueRoutes = require("./routes/RevenueRoutes");
-const PipedriveRoutes = require("./routes/PipedriveRoutes");
+const Mysql = require("./db/strategies/mysqldb/Mysql");
+const TrackerSchema = require("./db/strategies/mysqldb/schema/TrackerSchema");
+const TrackerRoute = require("./routes/TrackerRoutes");
 const UtilRoute = require("./routes/UtilRoutes");
 
 const app = new Hapi.Server({
@@ -32,8 +31,10 @@ function mapRoutes(instance, methods) {
 }
 
 async function main() {
-  // const connection = MongoDB.connect();
-  // const context = new Context(new MongoDB(connection, Schema));
+  const connection = await Mysql.connect();
+  const context = new Context(
+    new Mysql(connection.con, new TrackerSchema(connection.con))
+  );
 
   await app.register([Inert, Vision]);
 
@@ -44,11 +45,7 @@ async function main() {
     console.log("erro", error);
   }
 
-  app.route([
-    // ...mapRoutes(new PipedriveRoutes(context), PipedriveRoutes.methods()),
-    // ...mapRoutes(new RevenueRoutes(context), RevenueRoutes.methods()),
-    ...mapRoutes(new UtilRoute(), UtilRoute.methods()),
-  ]);
+  app.route([...mapRoutes(new TrackerRoute(context), TrackerRoute.methods())]);
   return app;
 }
 
