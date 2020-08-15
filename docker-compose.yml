@@ -22,10 +22,11 @@ services:
     env_file: .env
     environment:
        - MYSQL_ROOT_PASSWORD=$ROOT_PASSWORD
-       - MYSQL_DATABASE=fleetwise_prd 
-    command: mysqld --max_allowed_packet=32505856 --sql_mode="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+       - MYSQL_DATABASE=$MYSQL_DATABASE 
+    command: mysqld --max_allowed_packet=32505856 --explicit_defaults_for_timestamp --sql_mode="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
     volumes:
-        - ./docker/dados-mysql:/var/lib/mysql
+        - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+        - ./dados-mysql:/var/lib/mysql
     networks:
         - default
 
@@ -42,6 +43,8 @@ services:
           - PMA_HOST=$PMA_HOST
           - PMA_PORT=$PMA_PORT
           - UPLOAD_LIMIT=$UPLOAD_LIMIT
+volumes:
+  dados-mysql:
 
   # mongo:
   #   image: mongo
