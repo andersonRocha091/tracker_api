@@ -103,4 +103,38 @@ describe("Testing connection anda database interation", function () {
     const [result] = await context.getSpeedRankByTrackerId("ASC");
     expect(result.speed).equal(150);
   });
+
+  it("Getting the speed rank by tracker_uid descendant in 2020-07-01 02:43:32", async () => {
+    const [result] = await context.getSpeedRankByTrackerId(
+      "DESC",
+      "2020-07-01 02:43:32"
+    );
+    expect(result.speed).equal(195);
+  });
+
+  it("Getting the speed rank by tracker_uid ascendant in 2020-07-01 02:43:32", async () => {
+    const [result] = await context.getSpeedRankByTrackerId(
+      "ASC",
+      "2020-07-01 02:43:32"
+    );
+    expect(result.speed).equal(123);
+  });
+
+  it("Getting the speed rank by tracker_uid descendant in 2020-07-03 02:43:32 and 2020-07-04 02:43:32 ", async () => {
+    const [result] = await context.getSpeedRankByTrackerId(
+      "DESC",
+      "2020-07-03 02:43:32",
+      "2020-07-04 02:43:32"
+    );
+    expect(result.speed).equal(150);
+  });
+
+  it("Getting the speed rank by tracker_uid descendant in 2020-07-03 02:43:32 and 2020-07-04 02:43:32 ", async () => {
+    const [result] = await context.getSpeedRankByTrackerId(
+      "ASC",
+      "2020-07-03 02:43:32",
+      "2020-07-04 02:43:32"
+    );
+    expect(result.speed).equal(120);
+  });
 });
