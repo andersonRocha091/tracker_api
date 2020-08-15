@@ -47,14 +47,17 @@ class Tracker {
   }
 
   async read(item = {}, skip = 0, limit = 10) {
-    const condition = await this.getConditions(item);
+    const condition = await this.getFilterConditions(item);
     let sql = `SELECT * FROM tracking_202007_new ${condition} LIMIT ${limit} OFFSET ${skip}`;
     return this.executeQuery(sql);
   }
+
   async update(id, item, upsert) {
-    const fn = upsert ? "upsert" : "update";
-    const query = upsert ? { returning: true } : { where: { id: id } };
-    return this._schema[fn](item, query);
+    let sql = "UPDATE tracking_202007_new SET ";
+    const filter = await this.getFilterConditions({ uid: id });
+    let itensUpdate = await this.getUpdateParams(item);
+    sql = sql + itensUpdate + " " + filter;
+    return this.executeQuery(sql);
   }
 
   async delete(id) {
@@ -74,7 +77,23 @@ class Tracker {
     });
   }
 
-  getConditions(item) {
+  getUpdateParams(item) {
+    return new Promise((resolve, reject) => {
+      let params = "";
+      let keysSize = Object.keys(item).length;
+      if (keysSize == 0) return "";
+      Object.keys(item).forEach((element, key) => {
+        params +=
+          element === "insert_time" || element === "engine"
+            ? `${element}='${item[element]}'`
+            : `${element}=${item[element]}`;
+        params += keysSize > 1 && key < keysSize - 1 ? ", " : " ";
+      });
+      resolve(params);
+    });
+  }
+
+  getFilterConditions(item) {
     return new Promise((resolve, reject) => {
       let conditionWhereClause = "WHERE ";
       let keysSize = Object.keys(item).length;

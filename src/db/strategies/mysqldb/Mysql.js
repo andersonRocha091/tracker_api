@@ -42,9 +42,7 @@ class Mysql extends ICrud {
     return this._schema.read(item, skip, limit);
   }
   async update(id, item, upsert) {
-    const fn = upsert ? "upsert" : "update";
-    const query = upsert ? { returning: true } : { where: { id: id } };
-    return this._schema[fn](item, query);
+    return this._schema.update(id, item);
   }
 
   async delete(id) {
