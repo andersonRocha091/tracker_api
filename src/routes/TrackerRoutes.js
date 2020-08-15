@@ -38,18 +38,28 @@ class TrackerRoutes extends BaseRoute {
 
   create() {
     return {
-      path: "/revenues",
+      path: "/tracker",
       method: "POST",
       options: {
         validate: {
           failAction,
           payload: joi.object({
-            value: joi.number().min(1).required(),
-            pipedriveId: joi.number().min(1).required(),
-            day: joi.number().min(1).max(31).required(),
-            month: joi.number().min(1).max(12).required(),
-            description: joi.string().required(),
-            year: joi.number().min(1900).required(),
+            tracker_uid: joi.number().max(99999).required(),
+            angle: joi.number().max(999).default(0),
+            speed: joi.number().max(999).required(),
+            aquisition_time: Joi.date().timestamp(),
+            visible_satellites: joi.number().max(999).default(0),
+            engine: joi.string().max(3).default("on"),
+            event_id: joi.number().max(99999).default(0),
+            event_info: joi.number().max(999).default(0),
+            insert_time: joi
+              .string()
+              .regex(
+                /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+              ),
+            mileage: joi.number().min(0.0).max(999999999.999).default(0.0),
+            driver_ibutton: joi.string().max(16),
+            hdop: joi.number().min(0.0).max(999999.999),
           }),
         },
       },
