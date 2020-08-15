@@ -1,18 +1,18 @@
 version: "3.8"
 
 services:
-  api:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: api
-    env_file: .env
-    environment:
-            - node_env=$NODE_ENV
-    depends_on:
-        - mysql2
-    ports:
-        - "5000:5000"
+#   api:
+#     build:
+#       context: ./
+#       dockerfile: Dockerfile
+#     container_name: api
+#     env_file: .env
+#     environment:
+#             - node_env=$NODE_ENV
+#     depends_on:
+#         - mysql2
+#     ports:
+#         - "5000:5000"
 
   mysql2:
     image: mysql:5.6
