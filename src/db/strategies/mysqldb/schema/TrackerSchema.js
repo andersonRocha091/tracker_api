@@ -77,7 +77,7 @@ class Tracker {
     }
 
     sql = sql + condition + ` group by tracker_uid order by speed ${order}`;
-    console.log(sql);
+
     return this.executeQuery(sql);
   }
 
