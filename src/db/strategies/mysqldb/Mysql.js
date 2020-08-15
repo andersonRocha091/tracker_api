@@ -49,5 +49,9 @@ class Mysql extends ICrud {
     const query = uid ? { uid: uid } : {};
     return this._schema.delete(query);
   }
+
+  async getSpeedRankByTrackerId(order = "DESC", startDate, endDate) {
+    return this._schema.getSpeedRankByTrackerId(order, startDate, endDate);
+  }
 }
 module.exports = Mysql;

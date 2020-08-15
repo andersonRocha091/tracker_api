@@ -54,33 +54,42 @@ describe("Testing connection anda database interation", function () {
       new Mysql(connection.con, new Tracker(connection.con))
     );
   });
-  it("Testing if the database is crated and connected", () => {
-    assert.equal(context.isConnected(), "authenticated");
-  });
-  it("Insert an item into the database", async () => {
-    const result = await context.create(MOCK_INSERT_ITEM);
-    assert.equal(result.affectedRows, 1);
-  });
-  it("Listing an specific item by any attributes", async function () {
-    const result = await context.read({ speed: 130 });
-    assert.ok(result.length > 0);
-  });
+  // it("Testing if the database is crated and connected", () => {
+  //   assert.equal(context.isConnected(), "authenticated");
+  // });
+  // it("Insert an item into the database", async () => {
+  //   const result = await context.create(MOCK_INSERT_ITEM);
+  //   assert.equal(result.affectedRows, 1);
+  // });
+  // it("Listing an specific item by any attributes", async function () {
+  //   const result = await context.read({ speed: 130 });
+  //   assert.ok(result.length > 0);
+  // });
 
-  it("Updating an track record", async function () {
-    const [itemUpdate] = await context.read({ uid: 40 });
+  // it("Updating an track record", async function () {
+  //   const [itemUpdate] = await context.read({ uid: 40 });
 
-    const newItem = {
-      ...MOCK_UPDATE_ITEM,
-      tracker_uid: 12349,
-      speed: 170,
-    };
-    const result = await context.update(itemUpdate.uid, newItem);
-    assert.equal(result.affectedRows, 1);
-  });
+  //   const newItem = {
+  //     ...MOCK_UPDATE_ITEM,
+  //     tracker_uid: 12349,
+  //     speed: 170,
+  //   };
+  //   const result = await context.update(itemUpdate.uid, newItem);
+  //   assert.equal(result.affectedRows, 1);
+  // });
 
-  it("Removing itens", async function () {
-    const [item] = await context.read({});
-    const result = await context.delete(item.uid);
-    assert.ok(result.affectedRows);
+  // it("Removing itens", async function () {
+  //   const [item] = await context.read({});
+  //   const result = await context.delete(item.uid);
+  //   assert.ok(result.affectedRows);
+  // });
+
+  it("Getting and rank of speed by tracker_uid", async () => {
+    const [result] = await context.getSpeedRankByTrackerId(
+      "DESC",
+      "2020-07-01 02:43:34",
+      "2020-07-02 02:43:32"
+    );
+    assert.ok(result.tracker_uid);
   });
 });

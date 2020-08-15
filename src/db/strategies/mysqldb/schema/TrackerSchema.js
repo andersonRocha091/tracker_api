@@ -66,6 +66,21 @@ class Tracker {
     return this.executeQuery(sql);
   }
 
+  async getSpeedRankByTrackerId(order, startDate, endDate) {
+    let sql =
+      "select tracker_uid, MAX(speed) as speed from tracking_202007_new tn";
+    let condition = "";
+    if (startDate && endDate) {
+      condition = ` WHERE insert_time between '${startDate}' and '${endDate}' `;
+    } else if (startDate) {
+      condition = ` WHERE insert_time='${startDate}' `;
+    }
+
+    sql = sql + condition + ` group by tracker_uid order by speed ${order}`;
+    console.log(sql);
+    return this.executeQuery(sql);
+  }
+
   executeQuery(sql) {
     return new Promise((resolve, reject) => {
       this._connection.query(sql, function (err, result) {
