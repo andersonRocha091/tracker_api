@@ -61,9 +61,9 @@ describe("Testing connection anda database interation", function () {
     });
     await Promise.all(promises);
   });
-  // this.afterAll(async () => {
-  //   await context.delete();
-  // });
+  this.afterAll(async () => {
+    await context.delete();
+  });
 
   it("Testing if the database is crated and connected", () => {
     assert.equal(context.isConnected(), "authenticated");
