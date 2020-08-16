@@ -69,16 +69,37 @@ class Tracker {
   async getSpeedRankByTrackerId(order, startDate, endDate) {
     let sql =
       "select tracker_uid, MAX(speed) as speed from tracking_202007_new tn";
+    let condition = this.getSpecificTimeCondition(startDate, endDate);
+    sql = sql + condition + ` group by tracker_uid order by speed ${order}`;
+
+    return this.executeQuery(sql);
+  }
+
+  async getAllEventsByTrackerId(tracker_uid, startDate, endDate) {
+    if (tracker_uid) {
+      let sql = "select * from tracking_202007_new";
+      let condition = this.getSpecificTimeCondition(startDate, endDate);
+
+      sql =
+        sql +
+        condition +
+        ` ${
+          condition.length > 0 ? "AND" : "WHERE "
+        } tracker_uid=${tracker_uid}`;
+      return this.executeQuery(sql);
+    } else {
+      return { statusCode: 400, message: "'tracker_uid' not specified" };
+    }
+  }
+
+  getSpecificTimeCondition(startDate, endDate) {
     let condition = "";
     if (startDate && endDate) {
       condition = ` WHERE insert_time between '${startDate}' and '${endDate}' `;
     } else if (startDate) {
       condition = ` WHERE insert_time='${startDate}' `;
     }
-
-    sql = sql + condition + ` group by tracker_uid order by speed ${order}`;
-
-    return this.executeQuery(sql);
+    return condition;
   }
 
   executeQuery(sql) {

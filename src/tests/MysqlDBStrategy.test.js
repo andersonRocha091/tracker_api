@@ -135,4 +135,83 @@ describe("Testing connection and database interation", function () {
     );
     expect(result.speed).equal(120);
   });
+
+  it("Getting events by specific tracker_uid", async () => {
+    const expected = [
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 123,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-01T05:43:32.000Z",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 198,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-02T05:43:32.000Z",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 70,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-03T05:43:32.000Z",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 123,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-04T05:43:32.000Z",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+    ];
+    const result = await context.getAllEventsByTrackerId(12349);
+    let preData = JSON.stringify(result);
+    let finalData = JSON.parse(preData);
+    finalData = finalData.map((item) => {
+      delete item.uid;
+      return item;
+    });
+    assert.deepEqual(finalData, expected);
+  });
+
+  it("Must not retrieve any data if tracker_uid not specified", async () => {
+    let expected = { statusCode: 400, message: "'tracker_uid' not specified" };
+    const result = await context.getAllEventsByTrackerId();
+    assert.deepEqual(result, expected);
+  });
 });

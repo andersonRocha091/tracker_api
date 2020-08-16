@@ -158,7 +158,7 @@ describe("Starting API Tests", async function () {
     assert.deepEqual(expected, dados);
   });
 
-  it("Delete DELETE /tracker/:id - do not remove data it causes excepection", async () => {
+  it("Delete DELETE /tracker/:uid - do not remove data it causes excepection", async () => {
     const uid = `ID_INVALIDO`;
     const result = await app.inject({
       method: "DELETE",

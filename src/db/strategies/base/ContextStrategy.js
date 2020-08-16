@@ -27,6 +27,13 @@ class ContextStrategy extends ICrud {
   getSpeedRankByTrackerId(order = "DESC", startDate, endDate) {
     return this._database.getSpeedRankByTrackerId(order, startDate, endDate);
   }
+  getAllEventsByTrackerId(tracker_uid, startDate, endDate) {
+    return this._database.getAllEventsByTrackerId(
+      tracker_uid,
+      startDate,
+      endDate
+    );
+  }
 }
 
 module.exports = ContextStrategy;
