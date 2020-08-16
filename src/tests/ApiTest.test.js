@@ -103,4 +103,26 @@ describe("Starting API Tests", async function () {
     assert.ok(statusCode === 200);
     assert.deepEqual(dados.message, "Track record updated successfully");
   });
+
+  it("Update Object Partially /tracker/:uid - incorrect uid not update", async () => {
+    const uid = 200000;
+    const updatedAttribute = {
+      speed: 567,
+    };
+    const result = await app.inject({
+      method: "PATCH",
+      url: `/tracker/${uid}`,
+      payload: JSON.stringify(updatedAttribute),
+    });
+
+    const expected = {
+      statusCode: 412,
+      error: "Precondition Failed",
+      message: "Can't update tracker record",
+    };
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+    assert.ok(statusCode === 412);
+    assert.deepEqual(expected, dados);
+  });
 });
