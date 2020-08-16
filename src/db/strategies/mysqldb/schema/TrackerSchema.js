@@ -75,7 +75,7 @@ class Tracker {
     return this.executeQuery(sql);
   }
 
-  async getAllEventsByTrackerId(tracker_uid, startDate, endDate) {
+  async getAllEventsByTrackerId(tracker_uid, startDate, endDate, skip, limit) {
     if (tracker_uid) {
       let sql = "select * from tracking_202007_new";
       let condition = this.getSpecificTimeCondition(startDate, endDate);
@@ -85,7 +85,7 @@ class Tracker {
         condition +
         ` ${
           condition.length > 0 ? "AND" : "WHERE "
-        } tracker_uid=${tracker_uid}`;
+        } tracker_uid=${tracker_uid} LIMIT ${limit} OFFSET ${skip}`;
       return this.executeQuery(sql);
     } else {
       return { statusCode: 400, message: "'tracker_uid' not specified" };

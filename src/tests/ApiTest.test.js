@@ -84,7 +84,7 @@ describe("Starting API Tests", async function () {
     assert.deepEqual(statusCode, 400);
   });
 
-  it("Update Object Partially /tracker/:id", async () => {
+  it("Update Object Partially /tracker/:uid", async () => {
     const uid = MOCK_ID;
     const expected = {
       angle: 120,

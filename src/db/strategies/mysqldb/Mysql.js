@@ -54,11 +54,19 @@ class Mysql extends ICrud {
     return this._schema.getSpeedRankByTrackerId(order, startDate, endDate);
   }
 
-  async getAllEventsByTrackerId(tracker_uid, startDate, endDate) {
+  async getAllEventsByTrackerId(
+    tracker_uid,
+    startDate,
+    endDate,
+    skip = 0,
+    limit = 10
+  ) {
     return this._schema.getAllEventsByTrackerId(
       tracker_uid,
       startDate,
-      endDate
+      endDate,
+      skip,
+      limit
     );
   }
 }

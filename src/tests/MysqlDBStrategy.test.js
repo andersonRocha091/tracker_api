@@ -214,4 +214,57 @@ describe("Testing connection and database interation", function () {
     const result = await context.getAllEventsByTrackerId();
     assert.deepEqual(result, expected);
   });
+
+  it("Should retrieve all events by tracker_uid and specific date", async () => {
+    const expected = {
+      tracker_uid: 12348,
+      angle: 1,
+      speed: 80,
+      aquisition_time: 1593564093,
+      visible_satellites: 0,
+      engine: "on",
+      event_id: 7,
+      event_info: 0,
+      insert_time: "2020-07-04T05:43:32.000Z",
+      mileage: 248114.161,
+      voltage: 12.4,
+      driver_ibutton: 0,
+      hdop: 0,
+    };
+    const [result] = await context.getAllEventsByTrackerId(
+      12348,
+      "2020-07-04 02:43:32"
+    );
+    let preData = JSON.stringify(result);
+    let finalData = JSON.parse(preData);
+    delete finalData.uid;
+    assert.deepEqual(finalData, expected);
+  });
+
+  it("Should get an specific item between two dates", async () => {
+    const expected = {
+      tracker_uid: 12347,
+      angle: 1,
+      speed: 90,
+      aquisition_time: 1593564093,
+      visible_satellites: 0,
+      engine: "on",
+      event_id: 7,
+      event_info: 0,
+      insert_time: "2020-07-04T05:43:32.000Z",
+      mileage: 248114.161,
+      voltage: 12.4,
+      driver_ibutton: 0,
+      hdop: 0,
+    };
+    const [result] = await context.getAllEventsByTrackerId(
+      12347,
+      "2020-07-04 00:00:00",
+      "2020-07-04 23:59:59"
+    );
+    let preData = JSON.stringify(result);
+    let finalData = JSON.parse(preData);
+    delete finalData.uid;
+    assert.deepEqual(finalData, expected);
+  });
 });

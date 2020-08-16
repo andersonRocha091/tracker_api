@@ -27,11 +27,19 @@ class ContextStrategy extends ICrud {
   getSpeedRankByTrackerId(order = "DESC", startDate, endDate) {
     return this._database.getSpeedRankByTrackerId(order, startDate, endDate);
   }
-  getAllEventsByTrackerId(tracker_uid, startDate, endDate) {
+  getAllEventsByTrackerId(
+    tracker_uid,
+    startDate,
+    endDate,
+    skip = 0,
+    limit = 10
+  ) {
     return this._database.getAllEventsByTrackerId(
       tracker_uid,
       startDate,
-      endDate
+      endDate,
+      skip,
+      limit
     );
   }
 }
