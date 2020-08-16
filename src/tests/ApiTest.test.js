@@ -235,4 +235,145 @@ describe("Starting API Tests", async function () {
     assert.ok(statusCode === 200);
     expect(dados["message"][0].speed).equal(150);
   });
+
+  it("Should get all events by track_uid", async () => {
+    let expected = [
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 123,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-01 02:43:32",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 198,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-02 02:43:32",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 70,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-03 02:43:32",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+      {
+        tracker_uid: 12349,
+        angle: 1,
+        speed: 123,
+        aquisition_time: 1593564093,
+        visible_satellites: 0,
+        engine: "on",
+        event_id: 7,
+        event_info: 0,
+        insert_time: "2020-07-04 02:43:32",
+        mileage: 248114.161,
+        voltage: 12.4,
+        driver_ibutton: "0",
+        hdop: 0,
+      },
+    ];
+
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/event?tracker_uid=12349`,
+    });
+    const data = JSON.parse(result.payload);
+
+    let finalData = data.message.map((item) => {
+      delete item.uid;
+      return item;
+    });
+    assert.deepEqual(finalData, expected);
+  });
+
+  it("Must not retrieve any data from api if tracker_uid not specified", async () => {
+    let statusCodeExpected = 400;
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/event`,
+    });
+    const { statusCode } = JSON.parse(result.payload);
+    assert.equal(statusCode, statusCodeExpected);
+  });
+
+  it("Should retrieve all events from API by tracker_uid and specific date", async () => {
+    const expected = {
+      tracker_uid: 12348,
+      angle: 1,
+      speed: 170,
+      aquisition_time: 1593564093,
+      visible_satellites: 0,
+      engine: "on",
+      event_id: 7,
+      event_info: 0,
+      insert_time: "2020-07-02 02:43:32",
+      mileage: 248114.161,
+      voltage: 12.4,
+      driver_ibutton: "0",
+      hdop: 0,
+    };
+
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/event?tracker_uid=12348&startDate=2020-07-02 02:43:32`,
+    });
+    const { message } = JSON.parse(result.payload);
+    let item = message[0];
+    delete item.uid;
+    assert.deepEqual(item, expected);
+  });
+
+  // it("Should get an specific item between two dates", async () => {
+  //   const expected = {
+  //     tracker_uid: 12347,
+  //     angle: 1,
+  //     speed: 90,
+  //     aquisition_time: 1593564093,
+  //     visible_satellites: 0,
+  //     engine: "on",
+  //     event_id: 7,
+  //     event_info: 0,
+  //     insert_time: "2020-07-04 02:43:32",
+  //     mileage: 248114.161,
+  //     voltage: 12.4,
+  //     driver_ibutton: 0,
+  //     hdop: 0,
+  //   };
+  //   const [result] = await context.getAllEventsByTrackerId(
+  //     12347,
+  //     "2020-07-04 00:00:00",
+  //     "2020-07-04 23:59:59"
+  //   );
+  //   let preData = JSON.stringify(result);
+  //   let finalData = JSON.parse(preData);
+  //   delete finalData.uid;
+  //   assert.deepEqual(finalData, expected);
+  // });
 });

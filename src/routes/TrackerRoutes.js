@@ -2,6 +2,7 @@ const joi = require("@hapi/joi");
 const boom = require("boom");
 
 const BaseRoute = require("./base/BaseRoute");
+const DateHelper = require("../utils/DateHelper");
 const failAction = (request, headers, erro) => {
   throw erro;
 };
@@ -27,7 +28,13 @@ class TrackerRoutes extends BaseRoute {
       handler: async (request, headers) => {
         try {
           const { skip, limit } = request.query;
-          const result = await this.db.read({}, skip, limit);
+          let result = await this.db.read({}, skip, limit);
+          if (result.length > 0) {
+            result = result.map((item) => {
+              item.insert_time = DateHelper.convertDateFormat(item.insert_time);
+              return item;
+            });
+          }
           return { dados: result, statusCode: 200 };
         } catch (error) {
           return boom.internal();
@@ -228,6 +235,63 @@ class TrackerRoutes extends BaseRoute {
             startDate,
             endDate
           );
+          return {
+            message: result,
+          };
+        } catch (error) {
+          console.log(error);
+          return boom.internal();
+        }
+      },
+    };
+  }
+  getAllEventsByTrackerId() {
+    return {
+      path: "/tracker/event",
+      method: "GET",
+      options: {
+        validate: {
+          failAction,
+          query: joi.object({
+            tracker_uid: joi.number().max(99999).required(),
+            startDate: joi
+              .string()
+              .regex(
+                /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+              ),
+            endDate: joi
+              .string()
+              .regex(
+                /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+              ),
+            skip: joi.number().default(0),
+            limit: joi.number().default(10),
+          }),
+        },
+      },
+      handler: async (request) => {
+        try {
+          const {
+            tracker_uid,
+            startDate,
+            endDate,
+            skip,
+            limit,
+          } = request.query;
+          let result = await this.db.getAllEventsByTrackerId(
+            tracker_uid,
+            startDate,
+            endDate,
+            skip,
+            limit
+          );
+          if (result.length > 0) {
+            result = result.map((item) => {
+              item.insert_time = DateHelper.convertDateFormat(item.insert_time);
+              return item;
+            });
+          }
+
           return {
             message: result,
           };
