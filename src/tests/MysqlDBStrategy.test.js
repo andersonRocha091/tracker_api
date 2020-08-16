@@ -1,9 +1,6 @@
 const assert = require("assert");
 const { expect } = require("chai");
 
-const { config } = require("dotenv");
-const { join } = require("path");
-
 const Mysql = require("../db/strategies/mysqldb/Mysql");
 const Tracker = require("../db/strategies/mysqldb/schema/TrackerSchema");
 const Context = require("../db/strategies/base/ContextStrategy");
@@ -42,15 +39,10 @@ const MOCK_UPDATE_ITEM = {
   hdop: 0,
 };
 
-describe("Testing connection anda database interation", function () {
+describe("Testing connection and database interation", function () {
   this.timeout(Infinity);
 
   this.beforeAll(async () => {
-    const env = "dev";
-    const configPath = join(__dirname, "../config", `.env.${env}`);
-    config({
-      path: configPath,
-    });
     const connection = await Mysql.connect();
     context = new Context(
       new Mysql(connection.con, new Tracker(connection.con))
@@ -126,7 +118,7 @@ describe("Testing connection anda database interation", function () {
     expect(result.speed).equal(123);
   });
 
-  it("Getting the speed rank by tracker_uid descendant in 2020-07-03 02:43:32 and 2020-07-04 02:43:32 ", async () => {
+  it("Getting the speed rank by tracker_uid descendant between 2020-07-03 02:43:32 and 2020-07-04 02:43:32 ", async () => {
     const [result] = await context.getSpeedRankByTrackerId(
       "DESC",
       "2020-07-03 02:43:32",
@@ -135,7 +127,7 @@ describe("Testing connection anda database interation", function () {
     expect(result.speed).equal(150);
   });
 
-  it("Getting the speed rank by tracker_uid descendant in 2020-07-03 02:43:32 and 2020-07-04 02:43:32 ", async () => {
+  it("Getting the speed rank by tracker_uid descendant between 2020-07-03 02:43:32 and 2020-07-04 02:43:32 ", async () => {
     const [result] = await context.getSpeedRankByTrackerId(
       "ASC",
       "2020-07-03 02:43:32",

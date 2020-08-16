@@ -28,7 +28,7 @@ class TrackerRoutes extends BaseRoute {
         try {
           const { skip, limit } = request.query;
           const result = await this.db.read({}, skip, limit);
-          return result;
+          return { dados: result, statusCode: 200 };
         } catch (error) {
           return boom.internal();
         }
@@ -45,47 +45,70 @@ class TrackerRoutes extends BaseRoute {
           failAction,
           payload: joi.object({
             tracker_uid: joi.number().max(99999).required(),
-            angle: joi.number().max(999).default(0),
+            angle: joi.number().max(999).default(0).required(),
             speed: joi.number().max(999).required(),
-            aquisition_time: Joi.date().timestamp(),
-            visible_satellites: joi.number().max(999).default(0),
-            engine: joi.string().max(3).default("on"),
-            event_id: joi.number().max(99999).default(0),
-            event_info: joi.number().max(999).default(0),
+            aquisition_time: joi.number().required(),
+            visible_satellites: joi.number().max(999).default(0).required(),
+            engine: joi.string().max(3).default("on").required(),
+            event_id: joi.number().max(99999).default(0).required(),
+            event_info: joi.number().max(999).default(0).required(),
             insert_time: joi
               .string()
               .regex(
                 /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
-              ),
-            mileage: joi.number().min(0.0).max(999999999.999).default(0.0),
-            driver_ibutton: joi.string().max(16),
-            hdop: joi.number().min(0.0).max(999999.999),
+              )
+              .required(),
+            mileage: joi
+              .number()
+              .min(0.0)
+              .max(999999999.999)
+              .default(0.0)
+              .required(),
+            voltage: joi.number().max(999.99).min(0.0).required(),
+            driver_ibutton: joi.string().max(16).required(),
+            hdop: joi.number().min(0.0).max(999999.999).required(),
           }),
         },
       },
       handler: async (request) => {
         try {
           const {
-            value,
-            pipedriveId,
-            day,
-            year,
-            month,
-            description,
+            tracker_uid,
+            angle,
+            speed,
+            aquisition_time,
+            visible_satellites,
+            engine,
+            event_id,
+            event_info,
+            insert_time,
+            mileage,
+            voltage,
+            driver_ibutton,
+            hdop,
           } = request.payload;
           const result = await this.db.create({
-            value,
-            pipedriveId,
-            day,
-            year,
-            month,
-            description,
+            tracker_uid,
+            angle,
+            speed,
+            aquisition_time,
+            visible_satellites,
+            engine,
+            event_id,
+            event_info,
+            insert_time,
+            mileage,
+            voltage,
+            driver_ibutton,
+            hdop,
           });
           return {
-            message: "Revenue inserted successfully",
-            _id: result._id,
+            message: "Track record inserted successfully",
+            uid: result.insertId,
+            statusCode: "200",
           };
         } catch (error) {
+          console.log(error);
           return boom.internal();
         }
       },
@@ -94,7 +117,7 @@ class TrackerRoutes extends BaseRoute {
 
   update() {
     return {
-      path: "/revenues/{id}",
+      path: "/tracker/{id}",
       method: "PATCH",
       options: {
         validate: {
@@ -103,12 +126,23 @@ class TrackerRoutes extends BaseRoute {
             id: joi.string().required(),
           }),
           payload: joi.object({
-            value: joi.number().min(1),
-            pipedriveId: joi.number().min(1),
-            day: joi.number().min(1).max(31),
-            month: joi.number().min(1).max(12),
-            description: joi.string(),
-            year: joi.number().min(1900),
+            tracker_uid: joi.number().max(99999),
+            angle: joi.number().max(999),
+            speed: joi.number().max(999),
+            aquisition_time: joi.number(),
+            visible_satellites: joi.number().max(999),
+            engine: joi.string().max(3),
+            event_id: joi.number().max(99999),
+            event_info: joi.number().max(999),
+            insert_time: joi
+              .string()
+              .regex(
+                /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+              ),
+            mileage: joi.number().min(0.0).max(999999999.999),
+            voltage: joi.number().max(999.99).min(0.0),
+            driver_ibutton: joi.string().max(16),
+            hdop: joi.number().min(0.0).max(999999.999),
           }),
         },
       },
@@ -120,10 +154,11 @@ class TrackerRoutes extends BaseRoute {
           const dados = JSON.parse(dadosString);
 
           const result = await this.db.update(id, dados);
-          if (result.nModified !== 1)
-            return boom.preconditionFailed("Cant update revenue");
+          if (result.affectedRows !== 1)
+            return boom.preconditionFailed("Can't update tracker record");
           return {
-            message: "Revenue updated successfully",
+            message: "Track record updated successfully",
+            statusCode: 200,
           };
         } catch (error) {
           return boom.internal();
@@ -134,7 +169,7 @@ class TrackerRoutes extends BaseRoute {
 
   delete() {
     return {
-      path: "/revenues/{id}",
+      path: "/tracker/{id}",
       method: "DELETE",
       options: {
         validate: {

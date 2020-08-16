@@ -38,7 +38,7 @@ class Tracker {
           '${engine}',
           ${event_id},
           ${event_info},
-          '${insert_time}',
+          \'${insert_time}\',
           ${mileage},
           ${voltage},
           ${driver_ibutton},

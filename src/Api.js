@@ -45,7 +45,10 @@ async function main() {
     console.log("erro", error);
   }
 
-  app.route([...mapRoutes(new TrackerRoute(context), TrackerRoute.methods())]);
+  app.route([
+    ...mapRoutes(new TrackerRoute(context), TrackerRoute.methods()),
+    ...mapRoutes(new UtilRoute(), UtilRoute.methods()),
+  ]);
   return app;
 }
 
