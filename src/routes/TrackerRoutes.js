@@ -183,12 +183,13 @@ class TrackerRoutes extends BaseRoute {
         try {
           const { id } = request.params;
           const result = await this.db.delete(id);
-          if (result.n !== 1) {
+          if (result.affectedRows !== 1) {
             return boom.preconditionFailed("Id Not Found");
           }
 
           return {
-            message: "Revenue removed successfully",
+            message: "Tracker record removed successfully",
+            statusCode: 200,
           };
         } catch (error) {
           return boom.internal();

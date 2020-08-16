@@ -125,4 +125,52 @@ describe("Starting API Tests", async function () {
     assert.ok(statusCode === 412);
     assert.deepEqual(expected, dados);
   });
+
+  it("Delete DELETE /tracker/:uid", async () => {
+    const uid = MOCK_ID;
+    const result = await app.inject({
+      method: "DELETE",
+      url: `/tracker/${uid}`,
+    });
+
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+
+    assert.ok(statusCode === 200);
+    assert.deepEqual(dados.message, "Tracker record removed successfully");
+  });
+
+  it("Delete DELETE /tracker/:uid - invalid uid", async () => {
+    const uid = 3000000;
+    const result = await app.inject({
+      method: "DELETE",
+      url: `/tracker/${uid}`,
+    });
+    const expected = {
+      statusCode: 412,
+      error: "Precondition Failed",
+      message: "Id Not Found",
+    };
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+
+    assert.ok(statusCode === 412);
+    assert.deepEqual(expected, dados);
+  });
+
+  it("Delete DELETE /tracker/:id - do not remove data it causes excepection", async () => {
+    const uid = `ID_INVALIDO`;
+    const result = await app.inject({
+      method: "DELETE",
+      url: `/tracker/${uid}`,
+    });
+    const expected = {
+      error: "Internal Server Error",
+      message: "An internal server error occurred",
+      statusCode: 500,
+    };
+    const dados = JSON.parse(result.payload);
+
+    assert.deepEqual(expected, dados);
+  });
 });
