@@ -1,7 +1,7 @@
 {
-  "name": "linkapi_challenge",
+  "name": "transpoco",
   "version": "1.0.0",
-  "description": "Api integration between pipedrive and bling",
+  "description": "Api for monitoring trackers record",
   "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=html mocha --timeout 20000 --exit src/tests/*.js",
@@ -27,15 +27,11 @@
     "@hapi/joi": "^17.1.1",
     "@hapi/vision": "^6.0.0",
     "axios": "^0.19.2",
-    "bcrypt": "^4.0.1",
     "boom": "^7.3.0",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
-    "mongoose": "^5.9.16",
     "mysql": "^2.18.1",
-    "pm2": "^4.4.0",
-    "uuid": "^8.3.0",
-    "xmlbuilder": "^15.1.1"
+    "pm2": "^4.4.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
