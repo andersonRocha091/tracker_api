@@ -223,7 +223,6 @@ class TrackerRoutes extends BaseRoute {
       handler: async (request) => {
         try {
           const { order, startDate, endDate } = request.query;
-          console.log(order);
           const result = await this.db.getSpeedRankByTrackerId(
             order,
             startDate,

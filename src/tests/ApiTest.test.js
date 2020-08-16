@@ -197,4 +197,42 @@ describe("Starting API Tests", async function () {
     assert.ok(statusCode === 200);
     expect(dados["message"][0].speed).equal(150);
   });
+
+  it("Should get the speed rank by tracker_uid descendant in 2020-07-01 02:43:32", async () => {
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/rank?order=DESC&startDate=2020-07-01 02:43:32`,
+    });
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+    assert.ok(statusCode === 200);
+    expect(dados["message"][0].speed).equal(195);
+  });
+
+  it("Should get an error on retrieving the speed rank by tracker_uid descendant in 2020-07-01", async () => {
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/rank?order=DESC&startDate=2020-07-01`,
+    });
+    const expected = {
+      statusCode: 400,
+      error: "Bad Request",
+    };
+    const statusCode = result.statusCode;
+    const { error } = JSON.parse(result.payload);
+
+    assert.ok(statusCode === 400);
+    assert.deepEqual(expected, { statusCode, error });
+  });
+
+  it("Should get the speed rank by tracker_uid descendant between 2020-07-03 02:43:32 and 2020-07-04 02:43:32", async () => {
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/rank?order=DESC&startDate=2020-07-03 02:43:32&endDate=2020-07-04 02:43:32`,
+    });
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+    assert.ok(statusCode === 200);
+    expect(dados["message"][0].speed).equal(150);
+  });
 });
