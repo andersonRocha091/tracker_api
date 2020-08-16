@@ -173,4 +173,28 @@ describe("Starting API Tests", async function () {
 
     assert.deepEqual(expected, dados);
   });
+
+  it("Should Get the speed rank by tracker_uid descendant", async () => {
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/rank`,
+    });
+
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+    assert.ok(statusCode === 200);
+    expect(dados["message"][0].speed).equal(198);
+  });
+
+  it("Should get the speed rank by tracker_uid ascendant", async () => {
+    const result = await app.inject({
+      method: "GET",
+      url: `/tracker/rank?order=ASC`,
+    });
+
+    const statusCode = result.statusCode;
+    const dados = JSON.parse(result.payload);
+    assert.ok(statusCode === 200);
+    expect(dados["message"][0].speed).equal(150);
+  });
 });

@@ -198,29 +198,42 @@ class TrackerRoutes extends BaseRoute {
     };
   }
 
-  sum() {
+  getSpeedRankByTrackerId() {
     return {
-      path: "/revenues/sum",
+      path: "/tracker/rank",
       method: "GET",
       options: {
         validate: {
           failAction,
           query: joi.object({
-            year: joi.boolean(),
-            month: joi.boolean(),
-            day: joi.boolean(),
+            order: joi.string(),
+            startDate: joi
+              .string()
+              .regex(
+                /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+              ),
+            endDate: joi
+              .string()
+              .regex(
+                /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/
+              ),
           }),
         },
       },
       handler: async (request) => {
         try {
-          const { year, month, day } = request.query;
-          const result = await this.db.sum(year, month, day);
-
+          const { order, startDate, endDate } = request.query;
+          console.log(order);
+          const result = await this.db.getSpeedRankByTrackerId(
+            order,
+            startDate,
+            endDate
+          );
           return {
             message: result,
           };
         } catch (error) {
+          console.log(error);
           return boom.internal();
         }
       },
