@@ -1,6 +1,6 @@
 # Tracker API
 
-This project it's an backend API for an Pipedrive and Bling integration. It was built in NodeJS 12.8, and it comes with Hapi.js, base unit test, pm2 monitoring, and the all infra-structure already dockerized.
+This project it's an backend API for fleet traking. It was built in NodeJS 12.8, and it comes with Hapi.js, TDD and unit test, pm2 monitoring, and the all infra-structure already dockerized.
 
 ## Pre-requirements
 
