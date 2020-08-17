@@ -12,90 +12,83 @@ This project it's an backend API for an Pipedrive and Bling integration. It was 
 
 ## Installing
 
-> Clone this project in you machine using the command below:
+> Clone this project in your machine using the command below:
 > ```
-> 	git clone https://github.com/andersonRocha091/likapichallenge.git
+> 	git clone https://github.com/andersonRocha091/tracker_api.git
 > ```
 > Go to the project folder at your terminal:
 > ```
-> 	cd linkapichallenge
+> 	cd tracker_api
 > ```
-> if not already exists create a .env (Settings for mongoDB and mongocliente) file with the following params for your environment:
+> if not already exists create a .env (Settings for local mysql running at container and API) file with the following params for your environment:
 > ```
->MONGO_HOST=localhost
->MONGO_PORT=27017
->MONGO_INITDB_DATABASE=revenues
->MONGO_INITDB_ROOT_USERNAME=<your_root_user>
->MONGO_INITDB_ROOT_PASSWORD=<your_root_user_password>
->DATABASE_USER=<mongo_database_user>
->DATABASE_PASSWORD=<mongo_database_password>
+>ROOT_PASSWORD=<your-desired-root-password> //root password for local mysql running at container
+>MYSQL_DATABASE=fleetwise_prd //default local mysql database created on build
+>PMA_HOST=mysql2 //host for phpmyadmin mysql admin (mysql container)
+>PMA_PORT=3306 //deafault mysql port
+>UPLOAD_LIMIT=300000000
+>NODE_ENV=<'prod|dev'> //environment app excution
 > ```
 > Inside the aplication folder src/config, change the params:
 > ```
 > in .env.dev
->PORT=5000
->MONGODB_URL=mongodb://<DATABASE_USER>:<DATABASE_PASSWORD>@mongo:27017/revenues
->PIPEDRIVE_TOKEN=<you_pipedrive_token>
->PIPEDRIVE_API_URL=https://api.pipedrive.com/v1/deals
->BLING_API_TOKEN=<your_bling_api_key>
->BLING_API_URL=https://bling.com.br/Api/v2/pedido/json/
+>PORT=5000 //default port
+>MYSQL_HOST=localhost //running locally by default
+>MYSQL_USER=root //default local mysql instance running at container
+>PASSWORD=<'your-root-database-password'>
+>DATABASE=fleetwise_prd //default database
 >
->in .env.prod - (make sure you whitelisted all ips using 0.0.0.0/0 in network access on your
-> atlasDb account, and you also have already an revenues database created before running the app).
+>in .env.prod - (make sure you whitelisted all ips using 0.0.0.0/0 at your mysql hoste).
 >
 >PORT=5000
->MONGODB_URL=mongodb+srv://<DATABASE_USER>:<DATABASE_PASSWORD>@<your_cluster_address>/revenues?retryWrites=true&w=majority
->PIPEDRIVE_TOKEN=<you_pipedrive_token>
->PIPEDRIVE_API_URL=https://api.pipedrive.com/v1/deals
->BLING_API_TOKEN=<your_bling_api_key>
->BLING_API_URL=https://bling.com.br/Api/v2/pedido/json/
-
+>MYSQL_HOST=<database-host-url>
+>MYSQL_USER=<your-dabase-username>
+>PASSWORD=<your-dabase-password>
+>DATABASE=<dabase-name>
 > ```
 
 
 ## Execution
 
 > After setting up the .env's files you can run the api in production or in development mode. 
-> In terminal, inside likapichallenge start the local infrastructure:
+> In terminal, inside tracker_api start all containers:
 > ```
 > docker-compose up -d --build
 >
 > ```
-> By default the app will run at dev mode, if you want it to be running in prod, just change
-> the docker-compose.yml file enviroment node_env to dev, and run the previous command again. 
->```
->services:
->   api:
->       (...)
->       environment:
->            - "node_env=dev"
->```
+> The app will run at NODE_ENV mode assigned at .env file. If you change it, you need to run the previous command again. 
+>
 > you would be able to access the aplication endpoints by accessing localhost:5000/route
 >
-> OBS: There's also a mongoClient available for local mongodb management by default set in localhost:3000. (Feel free to use compass, or anything else which better suit for you)
+> OBS: There's also a phpmyadmin available for local mysql management by default set in localhost:81. (Feel free to use adminer, or anything else which better suit for you)
 
 ## Endpoints
 
-### Deals related
+### Speed rank by tracker
 
-* [Transfer deals from pipedrive to bling](deal/get.md) : `POST /deals/`
+* [Show the speeed rank by tracker](rank/get.md) : `GET tracker/rank`
 
-### Revenues related
+### Events by tracker uid
 
-* [Show All Revenues](revenues/get.md) : `GET /revenues/`
-* [Create a Revenue](revenues/post.md) : `POST /revenues/`
-* [Update a Revenue](revenues/patch.md) : `PATCH /revenues/:id/`
-* [Delete a Revenue](revenues/id/delete.md) : `DELETE /api/accounts/:pk/`
-* [Consolidate Total](revenues/sum.md) :`GET revenues/sum`
+* [Show the events by tracker uid](event/get.md) : `GET tracker/event`
+
+### Tracker information related
+
+* [Show All tracking information](tracker/get.md) : `GET /tracker/`
+* [Insert a new tracker log](tracker/post.md) : `POST /tracker/`
+* [Update a track log](tacker/patch.md) : `PATCH /tracker/:uid/`
+* [Delete a track log](tracker/id/delete.md) : `DELETE tracker/:id/`
 
 
 ## Testing
 
-The API was build using TDD and it is fully covered by unit tests. In order to run the TDD tests, just use the following command:
+The API was build using TDD and it is almost fully covered by unit tests. In order to run the TDD tests, just use the following command:
 >```
 > npm run test
 >```
-
+OBS: I recommend you run it locally because this comand start another api instace, and the container one will be using the same port in the enviroment you choose at .envs file. This 
+can be solved by running the command locally and changing in .env.{prod|dev} port to another
+one different from the default 5000.
 ## Author
 
 > - **Anderson Souza Rocha** - Full-stack developer - [Github](https://github.com/andersonRocha091) 
