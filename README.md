@@ -76,8 +76,8 @@ This project it's an backend API for fleet traking. It was built in NodeJS 12.8,
 
 * [Show All tracking information](tracker/get.md) : `GET /tracker/`
 * [Insert a new tracker log](tracker/post.md) : `POST /tracker/`
-* [Update a track log](tacker/patch.md) : `PATCH /tracker/:uid/`
-* [Delete a track log](tracker/id/delete.md) : `DELETE tracker/:id/`
+* [Update a track log](tracker/patch.md) : `PATCH /tracker/:uid/`
+* [Delete a track log](tracker/delete.md) : `DELETE tracker/:id/`
 
 
 ## Testing
