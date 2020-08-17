@@ -38,7 +38,7 @@ This project it's an backend API for fleet traking. It was built in NodeJS 12.8,
 >PASSWORD=<'your-root-database-password'>
 >DATABASE=fleetwise_prd //default database
 >
->in .env.prod - (make sure you whitelisted all ips using 0.0.0.0/0 at your mysql hoste).
+>in .env.prod - (make sure you whitelisted all ips using 0.0.0.0/0 at your mysql host).
 >
 >PORT=5000
 >MYSQL_HOST=<database-host-url>
