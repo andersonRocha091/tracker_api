@@ -1,10 +1,9 @@
-# Delete User's Account
+# Delete tracker log
+Delete tracker log for the specified id.
 
-Delete the revenue for the specified id.
+**URL** : `/tracker/:id/`
 
-**URL** : `/revenues/:id/`
-
-**URL Parameters** : `id=[string]` where `id` is the ID of the revenue in the
+**Parameters** : `id=[number]` where `id` is the ID of the tracker log in the
 database.
 
 **Method** : `DELETE`
@@ -15,12 +14,4 @@ database.
 
 **Code** : `200`
 
-**Content** : `{"message": "Revenue removed successfully"}`
-
-## Error Responses
-
-**Condition** : Revenue not found into the database.
-
-**Code** : `412 `
-
-**Content** : `{"statusCode": 412,"error": "Precondition Failed","message": "Id Not Found"}`
+**Content** : `{message: "Tracker record removed successfully",statusCode: 200};`
