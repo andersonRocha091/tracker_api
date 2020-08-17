@@ -1,8 +1,8 @@
-# Create an revenue
+# Insert a new tracker log
 
-Create an revenue into your mongo database
+Insert a new tacker log into your database
 
-**URL** : `/revenues/`
+**URL** : `/tracker/`
 
 **Method** : `POST`
 
@@ -10,35 +10,36 @@ Create an revenue into your mongo database
 
 ```json
 {
-   "value": 200.54,
-    "pipedriveId": 3,
-    "day": "10",
-    "month": "8",
-    "year": "2020",
-    "description": "my item description",
+   "tracker_uid": 1101,
+      "angle": 0,
+      "speed": 0,
+      "aquisition_time": 1593587867,
+      "visible_satellites": 0,
+      "engine": "off",
+      "event_id": 7,
+      "event_info": 0,
+      "insert_time": "2020-07-01 08:03:56",
+      "mileage": 248114.161,
+      "voltage": 12.3,
+      "driver_ibutton": "0",
+      "hdop": 0
+    }
 ```
 
 ## Success Response
 
-**Condition** : If everything is OK and an Account didn't exist for this User.
+**Condition** : If everything is OK and the record saved successfully.
 
 **Code** : `200`
 
 **Content example**
 
 ```json
-{{
-    "insertedAt": "2020-08-10T00:44:17.613Z",
-    "_id": "5f31ea1e88a95634ffec332a",
-    "pipedriveId": 3,
-    "description": "my item description",
-    "blingId": "",
-    "value":200.54,
-    "year": "2020",
-    "month": "8",
-    "day": "10",
-    "__v": 0
-  }
+{
+  "message": "Track record inserted successfully",
+  "uid": 12345,
+  "statusCode": "200",
+};
 ```
 
 ## Error Responses
@@ -47,5 +48,5 @@ Create an revenue into your mongo database
 
 **Code** : `400`
 
-**Content** : `{"statusCode": 400,"error": "Bad Request","message": "{value}" is required",}`
+**Content** : `{"statusCode": 400,"error": "Bad Request"}`
 
