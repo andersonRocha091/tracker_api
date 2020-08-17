@@ -32,15 +32,14 @@ This project it's an backend API for fleet traking. It was built in NodeJS 12.8,
 > Inside the aplication folder src/config, change the params:
 > ```
 > in .env.dev
->```
 >PORT=5000 //default port
 >MYSQL_HOST=localhost //running locally by default
 >MYSQL_USER=root //default local mysql instance running at container
 >PASSWORD=<'your-root-database-password'>
 >DATABASE=fleetwise_prd //default database
->```
->in .env.prod - (make sure you whitelisted all ips using 0.0.0.0/0 at your mysql host).
->```
+>
+>in .env.prod - (make sure you whitelisted all ips using 0.0.0.0/0 at your mysql hoste).
+>
 >PORT=5000
 >MYSQL_HOST=<database-host-url>
 >MYSQL_USER=<your-dabase-username>
