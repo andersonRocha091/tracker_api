@@ -82,7 +82,7 @@ This project it's an backend API for fleet tracking. It was built in NodeJS 12.8
 
 ## Testing
 
-The API was build using TDD and it is almost fully covered by unit tests. In order to run the TDD tests, just use the following command:
+The API was built using TDD and it is almost fully covered by unit tests. In order to run the TDD tests, just use the following command:
 >```
 > npm run test
 >```
