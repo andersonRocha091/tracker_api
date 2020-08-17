@@ -1,4 +1,4 @@
-# Transfer deals from pipedrive to bling
+# Ranking 
 
 Get a rank of top speeds by tracker. By default it is sorted in descendant mode.
 
@@ -112,11 +112,11 @@ Get a rank of top speeds by tracker. By default it is sorted in descendant mode.
 ## Notes
 
 * If you don't specify 'order' tha api will assume Descendant one:
-* If you misspell any parameter, or out of format for startDate, 
+* If you misspell any parameter, or out of format for startDate, and endDate
 ```json
 {
-  "message": "Sorry! but there were not deals with status: \"{status}\" anymore",
-  "results": []
+  "statusCode": 400,
+  "error": "Bad Request"
 }
 ```
 
