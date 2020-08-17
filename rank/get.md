@@ -111,7 +111,7 @@ Get a rank of top speeds by tracker. By default it is sorted in descendant mode.
 
 ## Notes
 
-* If you don't specify 'order' tha api will assume Descendant one:
+* If you don't specify 'order' the api will assume Descendant one:
 * If you misspell any parameter, or out of format for startDate, and endDate
 ```json
 {
