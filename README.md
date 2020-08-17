@@ -66,7 +66,7 @@ This project it's an backend API for fleet tracking. It was built in NodeJS 12.8
 
 ### Speed rank by tracker
 
-* [Show the speeed rank by tracker](rank/get.md) : `GET tracker/rank`
+* [Show the speed rank by tracker](rank/get.md) : `GET tracker/rank`
 
 ### Events by tracker uid
 
