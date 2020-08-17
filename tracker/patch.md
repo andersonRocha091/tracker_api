@@ -1,8 +1,8 @@
-# Update Account
+# Update an tracker log
 
-Update an revenue at your mongo database.
+Update an tacker log at your database.
 
-**URL** : `/revenues/:id/`
+**URL** : `/tracker/:id/`
 
 **Method** : `PATCH`
 
@@ -11,7 +11,7 @@ Update an revenue at your mongo database.
 
 ```json
 {
-    "_id": "mongo document id",
+    "id": 10,
 }
 ```
 
@@ -19,7 +19,7 @@ Update an revenue at your mongo database.
 
 ```json
 {
-    "description": "my item description new",
+    "speed": 120,
 }
 ```
 
@@ -30,22 +30,13 @@ of the Account.
 
 **Code** : `200 OK`
 
-**Content example** : For the example above, when the 'description' is updated and
-posted to `/revenues/5f31ea1e88a95634ffec332a/`...
+**Content example** :
 
 ```json
 {
-    "insertedAt": "2020-08-10T00:44:17.613Z",
-    "_id": "5f31ea1e88a95634ffec332a",
-    "pipedriveId": 3,
-    "description": "my item description new",
-    "blingId": "",
-    "value":200.54,
-    "year": "2020",
-    "month": "8",
-    "day": "10",
-    "__v": 0
-  }
+    "message": "Track record updated successfully",
+    "statusCode": 200,
+};
 ```
 
 ## Error Responses
@@ -55,8 +46,3 @@ posted to `/revenues/5f31ea1e88a95634ffec332a/`...
 **Code** : `400`
 
 **Content** : `{"statusCode": 400,"error": "Bad Request","message": "{value}" is required",}`
-
-## OR
-**Condition** : If body not passed as json.
-
-**Code** : `415 unsuported media type`
