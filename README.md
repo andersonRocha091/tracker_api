@@ -1,6 +1,7 @@
 # Tracker API
 
-This project it's an backend API for fleet tracking. It was built in NodeJS 12.8, and it comes with Hapi.js, TDD and unit test, pm2 monitoring, and all infra-structure already dockerized.
+This project it's an backend API for fleet tracking. It was built in NodeJS 12.8, and it comes with Hapi.js, TDD and unit test, strategy pattern for multi-data source utilization, pm2 monitoring, and all infra-structure already dockerized.
+OBS: It could be used Sequelize, or another ORM which better suits for you, I did it by my own for performance issues.
 
 ## Pre-requirements
 
