@@ -42,9 +42,9 @@ This project it's an backend API for fleet traking. It was built in NodeJS 12.8,
 >
 >PORT=5000
 >MYSQL_HOST=<database-host-url>
->MYSQL_USER=<your-dabase-username>
->PASSWORD=<your-dabase-password>
->DATABASE=<dabase-name>
+>MYSQL_USER=<your-database-username>
+>PASSWORD=<your-database-password>
+>DATABASE=<database-name>
 > ```
 
 
